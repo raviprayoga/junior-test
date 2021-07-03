@@ -1,0 +1,59 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: e5e5e5;
+}
+.jdl-lgn{
+    font-size: xx-large;
+    font-weight: 600;
+    margin-left: 50%;
+    margin-top: 20%;
+}
+.loginpage{
+    margin-top: 4%;
+    margin-left: 50%;
+}
+.lgn{
+    float: right;
+    margin-right: 18%;
+}
+.sgn-txt{
+    font-size: 12px;
+    
+}
+.sgn-txt a{
+    text-decoration: none;
+}
+.icn-dlt{
+    margin-right: 10px;
+    margin-left: 5px;
+}
+.pluss{
+   border: none;
+}
+.icn-pls{
+    color: #b7b7a4;
+}
+.icn-pls:hover{
+    color: #3a86ff;
+}
+.icn-dlt:hover{
+    color: #d00000;
+}
+.icn-edt:hover{
+    color: #faa307;
+}
+/* .dataTables_length { 
+    margin-left: 25%;
+    margin-top: 5%;
+};
+.dataTables_filter{
+    padding: 30%;
+} */
+.mbdy{
+    width: 80%;
+    text-align: center;
+}
+.btnmdl1{
+    margin-top: 5%;
+    text-align: right;
+}
