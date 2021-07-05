@@ -14,15 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 // login
 Route::get('/login', function () {
     return view('auth/login');
 });
+// Route::get('/{lang}', function ($lang){
+//     App::setlocale($lang);
+//     return view('auth/login');
+// });
 Route::get('/','authController@login')->name('login');
 Route::post('/loginpost','authController@loginpost');
 // signup
 Route::get('/signup','authController@signup')->name('signup');
 Route::post('/registerPost', 'authController@registerPost');
+// logout
+Route::get('/','authController@logout')->name('logout');
 
 // company
 Route::get('/home', 'UserController@getHome')->name('home'); 

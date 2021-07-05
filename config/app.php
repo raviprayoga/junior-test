@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,8 +93,17 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'id',
 
+    /**
+     * List of alternative languages (not including the one specified as 'locale')
+     */
+    'alt_langs' => array ('en', 'id'),
+
+    /**
+     *  Prefix of selected locale  - leave empty (set in runtime)
+     */
+    'locale_prefix' => '',
     /*
     |--------------------------------------------------------------------------
     | Faker Locale

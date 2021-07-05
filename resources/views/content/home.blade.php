@@ -1,12 +1,5 @@
 @extends('partials.sidebar')
 @section('content')
-    <head>
-        {{--  datatables  --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
-    </head>
     <body>
         <!-- main content area start -->
             <div class="main-content">
@@ -24,11 +17,13 @@
 
                         <!-- profile info & task notification -->
                         <div class="col-md-6 col-sm-4 clearfix">
-                            <ul class="notification-area pull-right">
-                                <li class="dropdown" style="margin-top: 30%">
+                            <a href="{{route('logout')}}">
+                                <ul class="notification-area pull-right">
+                                    <li class="dropdown" style="margin-top: 30%">
                                     <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </a>
                             <ul class="pull-right">
                                 <li style="margin-top: 50%">
                                     <button type="button" class="pluss" data-toggle="modal" data-target="#exampleModal">

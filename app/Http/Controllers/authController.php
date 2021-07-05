@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class authController extends Controller
 {
@@ -38,5 +39,11 @@ class authController extends Controller
         $data->save();
         // dd($request->all());
         return redirect('/login')->with('alert-success','Kamu berhasil Register');
+    }
+
+    // logout
+    public function logout(Request $request){
+        $request->session()->flush();
+        return redirect('/login');
     }
 }
