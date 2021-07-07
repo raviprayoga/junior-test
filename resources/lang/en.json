@@ -1,0 +1,15 @@
+{
+    "companies": "Companies",
+    "employees": "Employees",
+    "indonesian": "indonesia",
+    "england": "england",
+    "bahasa": "inggris",
+    "first" : "First Name",
+    "last" : "Last Name",
+    "company" : "Company",
+    "email" : "Email",
+    "phone" : "Phone",
+    "action" : "Action",
+    "name" : "Name",
+    "logo" : "logo"
+}

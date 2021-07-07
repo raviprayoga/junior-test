@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', function () {
     return view('auth/login');
 });
-// Route::get('/{lang}', function ($lang){
-//     App::setlocale($lang);
-//     return view('auth/login');
-// });
-Route::get('/','authController@login')->name('login');
+Route::get('locale/{locale}', function ($locale){
+    \Session::put('locale',$locale);
+    return redirect()->back();
+});
+Route::get('/login','authController@login')->name('login');
 Route::post('/loginpost','authController@loginpost');
 // signup
 Route::get('/signup','authController@signup')->name('signup');
@@ -46,4 +46,6 @@ Route::get('/employe', 'UserController@uploadEmploye');
 Route::post('/upload_employe/proses_upload_employe', 'UserController@proses_upload_employe');
 Route::get('/upload/delate_employe/{id}', 'UserController@hapus_employe');
 Route::match(['get','post'], '/edit{id}/editEmploye', 'UserController@editEmploye');
+
+
 

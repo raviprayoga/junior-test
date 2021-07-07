@@ -41,7 +41,7 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="breadcrumbs-area clearfix">
-                                <h4 class="page-title pull-left">Employees</h4>
+                                <h4 class="page-title pull-left">{{__('employees')}}</h4>
                                 {{--  <ul class="breadcrumbs pull-left">
                                     <li><a href="index.html">Home</a></li>
                                     <li><span>Employees</span></li>
@@ -73,12 +73,12 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Company</th>
-                                <th>Email</th>
-                                <th>phone</th>
-                                <th style="text-align: center">Action</th>
+                                <th>{{__("first")}}</th>
+                                <th>{{__("last")}}</th>
+                                <th>{{__("company")}}</th>
+                                <th>{{__("email")}}</th>
+                                <th>{{__("phone")}}</th>
+                                <th style="text-align: center">{{__("action")}}</th>
                             </tr>
                         </thead>
                         <tbody>

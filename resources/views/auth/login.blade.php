@@ -14,9 +14,7 @@
 <body>
     <div class="container">
         <div class="col-sm-8">
-            <p class="jdl-lgn">{{ __("bahasa.list1") }} 
-              <a href="{{ url('id/')}}" class="bahasa">Ind</a> 
-              <a href="{{ url('en/')}}" class="bahasa">Eng</a>
+            <p class="jdl-lgn">Login Page
             </p>
             <form class="loginpage" action="/loginpost" method="POST" enctype="multipart/form-data">
               {{ csrf_field() }}
