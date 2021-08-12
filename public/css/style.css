@@ -61,3 +61,33 @@ body{
     font-size: 18px;
     text-decoration: none;
 }
+.ImportExcel{
+    color: #9e9d9d !important;
+}
+.ImportExcel:hover{
+    color: #3a86ff !important;
+}
+.pagination{
+    margin-left: 43%;
+}
+.prev{
+    margin-right: 2%;
+}
+.next{
+    margin-left: 2%;
+}
+.bton-search{
+    /* margin-top: -7.5%; */
+    /* height: 38px !important; */
+}
+.bton-search:hover{
+    background-color: #3a86ff !important;
+}
+.srch{
+    border-radius: 13px;
+    border: #9e9d9d;
+    background-color: #eaeaea;
+    height: 39px;
+    color: black !important;
+    text-align: center;
+}

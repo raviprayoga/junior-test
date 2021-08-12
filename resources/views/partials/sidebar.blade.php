@@ -39,16 +39,20 @@
                             
                         {{--  multi lang  --}}
                             <li class="dropdown" style="list-style: none; ">
-                                <a id="langDropdown" class="nav-link" href="#" role="" data-toggle="dropdown">
-                                    <img src="{{__('icon/'.app()->getLocale().'.png')}}" alt="">
-                                    <p style="color: #fff">{{__('bahasa')}}</p>
-                                </a>
-                                <div style="width: 55px; height: 55px;" class="dropdown-menu" aria-labelledby="langDropdown">
+                                <a id="langDropdown" class="nav-link" href="#" role="" data-toggle="dropdown" style="">
                                     @if (app()->getLocale()=='id')
-                                        <a href="{{url('locale/en')}}" class="dropdown-item"><img style="width: 50px; height: 50px; margin-top: -20px;" src="{{__('icon/england.png')}}" alt=""></a>
+                                    <img style="width: 30px; height: 30px; margin-top: 0px; margin-left: 15px" src="{{__('icon/indonesia.png')}}" alt="">
                                     @endif
                                     @if (app()->getLocale()=='en')
-                                        <a href="{{url('locale/id')}}" class="dropdown-item"><img style="width: 50px; height: 50px;margin-top: -20px;" src="{{__('icon/indonesia.png')}}" alt=""></a>
+                                    <img style="width: 30px; height: 30px;margin-top: 0px;  margin-left: 15px" src="{{__('icon/england.png')}}" alt="">
+                                    @endif
+                                </a>
+                                <div style="width: 30px; height: 50px;  margin-left: 25px" class="dropdown-menu" aria-labelledby="langDropdown">
+                                    @if (app()->getLocale()=='id')
+                                        <a href="{{url('locale/en')}}" class="dropdown-item"><img style="width: 30px; height: 30px; margin-top: -20px;" src="{{__('icon/england.png')}}" alt=""></a>
+                                    @endif
+                                    @if (app()->getLocale()=='en')
+                                        <a href="{{url('locale/id')}}" class="dropdown-item"><img style="width: 30px; height: 30px;margin-top: -20px;" src="{{__('icon/indonesia.png')}}" alt=""></a>
                                     @endif
                                 </div>
                             </li>
@@ -73,22 +77,22 @@
         </div>
     </footer>
     <div>
-        <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
+        {{--  <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>  --}}
+        {{--  <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>  --}}
         {{--  disable/enable pageination  --}}
-        <script type="text/javascript">
+        {{--  <script type="text/javascript">
             $(document).ready(function () {
                 $('#dtBasicExample').DataTable({
                 "paging": true,
-                "pageLength": 10,
+                "pageLength": 5,
                 "sPagingType": "simple_numbers",
-                "lengthMenu": [ 10 , 15 , 30, ],
+                "lengthMenu":[[5, 10, 20, -1], [5, 10, 20, "All"]],
                 {{-- "order": [[ 2, "desc" ]] --}}
-                });
-                $('.dataTables_length').addClass('bs-select');
-            });
-        </script>
+                {{--  });  --}}
+                {{--  $('.dataTables_length').addClass('bs-select');  --}}
+            {{--  });   --}}
+        {{--  </script>  --}}
         <!-- bootstrap 4 js -->
         <script src="{{asset('js/popper.min.js')}}"></script>
         {{--  <script src="{{asset('js/bootstrap.min.js')}}"></script>  --}}
