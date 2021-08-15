@@ -18,6 +18,8 @@ class CompaniesImport implements ToModel
             'name' => $row[1],
             'email' => $row[2],
             'logo' =>$row[3],
+            'created_by_id' => $row[4],
+            'updated_by_id' => $row[5],
         ]);
         
     }

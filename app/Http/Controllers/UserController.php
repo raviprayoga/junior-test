@@ -11,23 +11,30 @@ use App\Imports\CompaniesImport;
 use App\Imports\EmployeesImport;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendEmail;
+use App\Timezone;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
      // Home
      public function getHome(){
-        return view('content.home');
+        $timezone = \App\Timezone::all();
+        return view('content.home', ['timezone' =>$timezone]);
     }
     // show data
     public function getCompany(){
         // $company = Model_Companies::paginate(10);
         $company = DB::table('companies')->orderBy('created_at', 'desc')->get();
-        return view('content.home', ['company' => $company]);
+        $timezone = \App\Timezone::all();
+        return view('content.home', ['company' => $company, 'timezone' =>$timezone]);
     }
     // export from excel
     public function getCompaniesExport()
@@ -47,8 +54,12 @@ class UserController extends Controller
     }
     // add data
     public function uploadCompany(){
+
+        // dd(Session::get('jwt_token'));
         $company = Model_Companies::orderBy('created_at', 'desc')->get();
-        return view('content.home',['company' => $company]);
+        $user = \App\User::all();
+        $timezone = \App\Timezone::all();
+        return view('content.home',['company' => $company, 'user'=>$user,'timezone' =>$timezone]);
     }
     public function proses_upload_company(Request $request){
         // dd($request->all());
@@ -69,6 +80,8 @@ class UserController extends Controller
         $company->name = $request->name;
         $company->email = $request->email;
         $company->logo = $nama_file;
+        $company->created_by_id = Auth::user()->id;
+        $company->updated_by_id = Auth::user()->id;
         $company->save();
 
         // email with mailtrap
@@ -105,8 +118,9 @@ class UserController extends Controller
             $nama_file = $file->getClientOriginalName();
             $tujuan_upload = 'img_company';
             $file->move($tujuan_upload, $nama_file);
+            $user = Auth::user()->id;
 
-            Model_Companies::where(['id'=>$id])->update(['name'=>$company['name'], 'email'=>$company['email'], 'logo'=>$nama_file]);
+            Model_Companies::where(['id'=>$id])->update(['name'=>$company['name'], 'email'=>$company['email'], 'logo'=>$nama_file, 'updated_by_id'=>$user]);
             return redirect()->back()->with('success', 'Data berhasil diubah!');
         }
     }
@@ -154,13 +168,27 @@ class UserController extends Controller
             'email' => 'required',
             'phone' => 'required',
         ]);
-        Model_Employees::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'company_id' => $request->company,
-            'phone' =>$request->phone,
-        ]);
+        // Model_Employees::create([
+        //     'first_name' => $request->first_name,
+        //     'last_name' => $request->last_name,
+        //     'email' => $request->email,
+        //     'company_id' => $request->company,
+        //     'phone' =>$request->phone,
+        //     'password' =>bcrypt($request->password),
+        //     'created_by_id' =>Auth::user()->id,
+        //     'updated_by_id' =>Auth::user()->id,
+        // ]);
+        $employe = new \App\Model_Employees;
+        $employe->first_name = $request->first_name;
+        $employe->last_name = $request->last_name;
+        $employe->email = $request->email;
+        $employe->company_id = $request->company;
+        $employe->phone = $request->phone;
+        $employe->password = bcrypt($request->password);
+        $employe->created_by_id = Auth::user()->id;
+        $employe->updated_by_id = Auth::user()->id;
+        $employe->save();
+ 
         return redirect()->back()->with('success','Data berhasil di input!');
     }
     public function hapus_employe($id){
@@ -170,7 +198,9 @@ class UserController extends Controller
     public function editEmploye(Request $request, $id){
         if($request->isMethod('post')){
             $employe = $request->all();
-            Model_Employees::where(['id'=>$id])->update(['first_name'=>$employe['first_name'], 'last_name'=>$employe['last_name'],'company_id'=>$employe['company'],'email'=>$employe['email'], 'phone'=>$employe['phone']]);
+            $user = Auth::user()->id;
+            // $pw = bcrypt($request->password);
+            Model_Employees::where(['id'=>$id])->update(['first_name'=>$employe['first_name'], 'last_name'=>$employe['last_name'],'company_id'=>$employe['company'],'email'=>$employe['email'], 'phone'=>$employe['phone'], 'password'=>bcrypt($employe['password']) ,'updated_by_id'=>$user]);
             return redirect()->back();
         }
     }

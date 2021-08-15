@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use JWTAuth;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
 class JwtMiddleware extends BaseMiddleware
@@ -20,7 +22,7 @@ class JwtMiddleware extends BaseMiddleware
     {
        
         if(! Session::get('jwt_token')){
-            return redirect('/home');
+            return redirect('/login');
         }
 
         return $next($request);

@@ -18,6 +18,10 @@ class Companies extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('logo');
+            $table->bigInteger('created_by_id')->unsigned();
+            $table->foreign('created_by_id')->references('id')->on('users');
+            $table->bigInteger('updated_by_id')->unsigned();
+            $table->foreign('updated_by_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

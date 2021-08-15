@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use JWTAuth;
 
 class authController extends Controller
@@ -18,51 +19,18 @@ class authController extends Controller
     }
     public function loginpost(Request $request){
         // dd($request->all());
-        // if(Auth::attempt($request->only('email','password'))){
-        //     return redirect('/home');
-        // }
-        // return redirect('/login');
-
-        // jwt
-        //    if(Auth::attempt($request->only('email', 'password'))){
-        //     $user = Auth::user();
-        //     $token = $user->createToken('token')->plainTextToken;
-        //     // return redirect('/home');
-        //     return $token;
-        //    }
-        //    return redirect('/login');
-
-        // $data = [
-        //     'email' => $request->email,
-        //     'password' => $request->password
-        // ];
-        // $user = Auth::attempt($data);
-        
-        // if($user){
-        //     if(Auth::attempt($request->only('email', 'password'))){
-        //         $token = JWTAuth::attempt($data);
-        //         session(['jwt_token' => $token]);
-        //         return redirect('/home');
-        //     }else{
-        //         return redirect()->back();
-        //     }
-        // }else {
-        //     return redirect()->back()->with('wrong','Account does not exist!');
-        // }
-    $credentials = $request->only('email', 'password');
-
-        try {
-            if (! $token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'invalid_credentials'], 400);
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
+        if(Auth::attempt($request->only('email','password'))){
+            $data = [
+                'email' => $request->email,
+                'password' => $request->password
+            ];
+            $token = JWTAuth::attempt($data);
+            // dd($token);
+            session(['jwt_token' => $token]);
+            // dd(Session::get('jwt_token'));
+            return redirect('/home');
         }
-
-        // return response()->json(compact('token'));
-        // return ($request);
-        return redirect('home');
-
+        return redirect('/login');
     }
 
     // signup
@@ -84,7 +52,7 @@ class authController extends Controller
         // dd($request->all());
         return redirect('/login')->with('alert-success','Kamu berhasil Register');
     }
-
+    
     // logout
     public function logout(Request $request){
         $request->session()->flush();

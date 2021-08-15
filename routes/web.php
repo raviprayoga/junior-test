@@ -35,7 +35,7 @@ Route::post('/registerPost', 'authController@registerPost');
 // logout
 Route::get('/','authController@logout')->name('logout');
 
-// Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'jwt.verify'], function () {
     // company
     Route::get('/home', 'UserController@getHome')->name('home'); 
     Route::get('/home', 'UserController@getCompany');
@@ -59,8 +59,9 @@ Route::get('/','authController@logout')->name('logout');
 
     // mail
     Route::get('/email', 'UserController@mail');
+});
 
-// });
+
 
 
 

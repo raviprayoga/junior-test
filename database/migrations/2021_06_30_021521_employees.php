@@ -21,6 +21,11 @@ class Employees extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->string('email');
             $table->string('phone');
+            $table->string('password');
+            $table->bigInteger('created_by_id')->unsigned();
+            $table->foreign('created_by_id')->references('id')->on('users');
+            $table->bigInteger('updated_by_id')->unsigned();
+            $table->foreign('updated_by_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

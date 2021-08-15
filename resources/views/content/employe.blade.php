@@ -107,6 +107,9 @@
                                 <th>{{__("company")}}</th>
                                 <th>{{__("email")}}</th>
                                 <th>{{__("phone")}}</th>
+                                <th>created_by_id</th>
+                                <th>updated_by_id</th>
+                                <th>Pass</th>
                                 <th style="text-align: center">{{__("action")}}</th>
                             </tr>
                         </thead>
@@ -122,6 +125,9 @@
                                 <td>{{$item_employe->companies['name']}}</td>
                                 <td>{{$item_employe->email}}</td>
                                 <td>{{$item_employe->phone}}</td>
+                                <td>{{$item_employe->created_by_id}}</td>
+                                <td>{{$item_employe->updated_by_id}}</td>
+                                <td>{{$item_employe->password}}</td>
                                 <td style="text-align: center">
                                     <a href="/upload/delate_employe/{{$item_employe->id}}" style="color: #495057"><i class="fas fa-trash fa-lg icn-dlt"></i></a>
                                     <a data-toggle="modal" data-target="#editModalEmploye-{{$item_employe->id}}" href="" style="color: #495057"><i class="fas fa-edit fa-lg icn-edt"></i></a>
@@ -162,6 +168,7 @@
                                             @endforeach
                                     </select>
                                 <input class="modal_body mbdy" style="margin-top: 4%" name="email" type="text" placeholder="Email">
+                                <input class="modal_body mbdy" style="margin-top: 4%" name="password" type="text" placeholder="Password">
                                 <input class="modal_body mbdy" style="margin-top: 4%" name="phone" type="text" placeholder="Phone"> <br>
                                 <div class="btnmdl1">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -198,6 +205,7 @@
                                         @endforeach
                                 </select>
                                 <input class="modal_body mbdy" style="margin-top: 4%" name="email" type="text" id="email" value="{{$edtemploye->email}}"> 
+                                <input class="modal_body mbdy" style="margin-top: 4%" name="password" type="text" id="password" value="{{$edtemploye->password}}"> 
                                 <input class="modal_body mbdy" style="margin-top: 4%" name="phone" type="text" id="phone" value="{{$edtemploye->phone}}"> 
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

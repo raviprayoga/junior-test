@@ -74,6 +74,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                            <div class="breadcrumbs-area clearfix">
+                                <select class="form-control" style="margin-top: 4%; width: 80%;margin-left: 10%;" id="company" name="company">
+                                    <option value="" selected> Select Company... </option>
+                                        @foreach ($timezone as $time)
+                                            <option value="{{$time->id}}">{{$time->name}}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- CONTENT --}}
@@ -96,11 +108,15 @@
                             </div>
                         @endif
                         <thead>
+                            {{--  {{auth()->user()->name}}  --}}
                             <tr>
                                 <th>No</th>
                                 <th>{{__("name")}}</th>
                                 <th>{{__("email")}}</th>
                                 <th>{{__("logo")}}</th>
+                                <th>created_by_id</th>
+                                <th>updated_by_id</th>
+                                <th>created_at</th>
                                 <th style="text-align: center">{{__("action")}}</th>
                             </tr>
                         </thead>
@@ -116,6 +132,9 @@
                                 <td>{{$item->logo}}
                                     {{-- <img src="{{ url('/img_company/'.$item->logo) }}" alt="" style="width: 70px; height: 70px;"> --}}
                                 </td>
+                                <td>{{$item->created_by_id}}</td>
+                                <td>{{$item->updated_by_id}}</td>
+                                <td>{{$item->created_at}}</td>
                                 <td style="text-align: center">
                                     <a href="/upload/delate_company/{{ $item->id }}" style="color: #495057"><i class="fas fa-trash fa-lg icn-dlt"></i></a>
                                     <a data-toggle="modal" data-target="#editModal-{{$item->id}}" href="" style="color: #495057"><i class="fas fa-edit fa-lg icn-edt"></i></a>
