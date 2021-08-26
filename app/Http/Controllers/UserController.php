@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CompaniesExport;
 use App\Imports\CompaniesImport;
 use App\Imports\EmployeesImport;
+
+use Illuminate\Support\Facades\Config;
 use App\Jobs\SendEmailJob;
 use App\Mail\SendEmail;
 use App\Timezone;
@@ -30,11 +32,9 @@ class UserController extends Controller
         return view('content.home', ['timezone' =>$timezone]);
     }
     // show data
-    public function getCompany(){
-        // $company = Model_Companies::paginate(10);
+    public function getCompany(Request $request){
         $company = DB::table('companies')->orderBy('created_at', 'desc')->get();
-        $timezone = \App\Timezone::all();
-        return view('content.home', ['company' => $company, 'timezone' =>$timezone]);
+        return view('content.home', ['company' => $company, ]);
     }
     // export from excel
     public function getCompaniesExport()
@@ -53,21 +53,26 @@ class UserController extends Controller
         return redirect()->back()->with('success','Data berhasil di input!');
     }
     // add data
-    public function uploadCompany(){
-
+    public function uploadCompany(Request $request){
         // dd(Session::get('jwt_token'));
-        $company = Model_Companies::orderBy('created_at', 'desc')->get();
+        // dd($request->user());
+        // dd(request('query'));
+
+        $paged= $request->paged;
+        $company = Model_Companies::orderBy('created_at', 'desc')->filter(request('query'))->paginate($paged)->withQueryString();
+        
         $user = \App\User::all();
-        $timezone = \App\Timezone::all();
-        return view('content.home',['company' => $company, 'user'=>$user,'timezone' =>$timezone]);
+        return view('content.home', compact('company','user','paged'));
     }
     public function proses_upload_company(Request $request){
+        // $timezone = Session::get('timezone');
         // dd($request->all());
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
             'logo' => 'required|image|mimes:jpeg,png,svg,jpg|',
             'logo' => 'dimensions:min_width=100,min_height=100',
+            'website' => 'required',
             
         ]);
 
@@ -80,21 +85,14 @@ class UserController extends Controller
         $company->name = $request->name;
         $company->email = $request->email;
         $company->logo = $nama_file;
+        $company->website = $request->website;
         $company->created_by_id = Auth::user()->id;
         $company->updated_by_id = Auth::user()->id;
         $company->save();
-
-        // email with mailtrap
-        // Mail::raw('Wellcome ' .$company->name, function ($message) use($company) {
-        //     $message->from('admin@admin.com', 'Admin');
-        //     $message->to($company->email, $company->name);
-        //     $message->subject('Your company has been registered in our system');
-        // });
-        // Mail::to('raviprayoga@gmail.com')->send(new SendEmail());
-        // dispatch(new SendEmailJob());
         $job = (new SendEmailJob())->delay(Carbon::now()->addSecond(5));
         dispatch($job);
         //  php artisan queue:work to start job
+        // Config::set('app.timezone', 'UTC');
 
         return redirect()->back()->with('success','Data berhasil di input!');
     }
@@ -112,6 +110,7 @@ class UserController extends Controller
                 'email' => 'required',
                 'logo' => 'required|image|mimes:jpeg,png,svg,jpg|',
                 'logo' => 'dimensions:min_width=100,min_height=100',
+                'website' => 'required',
             ]);
             
             $file = $request->file('logo');
@@ -120,30 +119,18 @@ class UserController extends Controller
             $file->move($tujuan_upload, $nama_file);
             $user = Auth::user()->id;
 
-            Model_Companies::where(['id'=>$id])->update(['name'=>$company['name'], 'email'=>$company['email'], 'logo'=>$nama_file, 'updated_by_id'=>$user]);
+            Model_Companies::where(['id'=>$id])->update(['name'=>$company['name'], 'email'=>$company['email'], 'logo'=>$nama_file, 'website'=>$company['website'] ,'updated_by_id'=>$user]);
             return redirect()->back()->with('success', 'Data berhasil diubah!');
         }
     }
-    // search company
-    public function searchCompany()
-    {
-        $search_text = $_GET['query'];
-        $company = Model_Companies::where('name', 'LIKE', '%'.$search_text.'%')
-        ->orWhere('email', 'LIKE', '%'.$search_text.'%')
-        ->orWhere('logo', 'LIKE', '%'.$search_text.'%')
-        ->orWhere('created_at', 'LIKE', '%'.$search_text.'%')
-        ->orWhere('updated_at', 'LIKE', '%'.$search_text.'%')
-        ->get(); 
-        
-        return view('content.home', compact('company'));
-    }
-
+   
     // employe
     public function getEmploye(){
-        return view('content.employe');
+        $employe = DB::table('employees')->orderBy('created_at','desc')->get();
+        return view('content.employe', compact('employe'));
     }
     public function employe(){
-        $employe = DB::table('employees')->get();
+        $employe = DB::table('employees')->orderBy('created_at','desc')->get();
         $company = \App\Model_Companies::all();
         return view('content.employe', ['employe' => $employe, 'company' => $company]);
     }
@@ -155,29 +142,21 @@ class UserController extends Controller
         Excel::import(new EmployeesImport, public_path('/DataPegawai/'.$nama_file));
         return redirect()->back();
     }
-    public function uploadEmploye(){
-        $employe = Model_Employees::get();
+    public function uploadEmploye(Request $request){
+        $paged = $request->paged;
+        $employe = Model_Employees::orderBy('created_at', 'desc')->filter(request('query'))->paginate($paged)->withQueryString();
         $company = \App\Model_Companies::all();
-        return view('content.employe',['employe' => $employe, 'company' => $company]);
+        return view('content.employe',compact('employe','company','paged'));
     }
     public function proses_upload_employe(Request $request){
         // dd($request->all());
+        $timezone = Session::get('timezone');
         $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required',
             'phone' => 'required',
         ]);
-        // Model_Employees::create([
-        //     'first_name' => $request->first_name,
-        //     'last_name' => $request->last_name,
-        //     'email' => $request->email,
-        //     'company_id' => $request->company,
-        //     'phone' =>$request->phone,
-        //     'password' =>bcrypt($request->password),
-        //     'created_by_id' =>Auth::user()->id,
-        //     'updated_by_id' =>Auth::user()->id,
-        // ]);
         $employe = new \App\Model_Employees;
         $employe->first_name = $request->first_name;
         $employe->last_name = $request->last_name;
@@ -189,6 +168,7 @@ class UserController extends Controller
         $employe->updated_by_id = Auth::user()->id;
         $employe->save();
  
+        Config::set('app.timezone', 'UTC');
         return redirect()->back()->with('success','Data berhasil di input!');
     }
     public function hapus_employe($id){
@@ -204,22 +184,7 @@ class UserController extends Controller
             return redirect()->back();
         }
     }
-     // search company
-     public function searchEmploye()
-     {
-         $company = \App\Model_Companies::all();
-         $search_text = $_GET['query'];
-         $employe = Model_Employees::where('first_name', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('last_name', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('company_id', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('email', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('phone', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('created_at', 'LIKE', '%'.$search_text.'%')
-         ->orWhere('updated_at', 'LIKE', '%'.$search_text.'%')
-         ->get(); 
-         
-         return view('content.employe', compact('employe','company'));
-     }
+    
     //  mail
     public function mail()
     {

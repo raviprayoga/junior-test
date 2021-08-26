@@ -58,10 +58,10 @@
                             </li>
                         {{--  end multi lang  --}}
                             <li>
-                                <a href="{{('home')}}" aria-expanded="true"><i class="ti-dashboard"></i><span>{{__('companies')}}</span></a>
+                                <a href="{{('home')}}?paged=5000" aria-expanded="true"><i class="ti-dashboard"></i><span>{{__('multilang.companies')}}</span></a>
                             </li>
                             <li>
-                                <a href="{{('employe')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>{{__('employees')}}</span></a>
+                                <a href="{{('employe')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>{{__('multilang.employees')}}</span></a>
                             </li>
                         </ul>
                     </nav>

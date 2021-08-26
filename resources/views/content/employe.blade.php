@@ -15,8 +15,9 @@
                         </div>
                         <div class="col-md-4 mt-2">
                             <div class="">
-                                <form action="/searchemploye" type="get">
+                                <form action="/employe" type="get">
                                     <input class="srch col-md-6" name="query" type="search" placeholder="search" >
+                                    <input  hidden  name="paged" value="{{ $paged }}">
                                     <button class="btn btn-danger" type="submit">Search</button>
                                 </form>
                             </div>
@@ -66,15 +67,29 @@
                     <div class="row align-items-center">
                         <div class="col-sm-4">
                             <div class="breadcrumbs-area clearfix">
-                                {{--  <h4 class="page-title pull-left"></h4>  --}}
-                                <div class="form-group page-title pull-left">
-                                    <select name="state" id="maxRows" class="form-control" style="width: 100px">
-                                        <option value="5">5</option>
-                                        <option value="10">10</option>
-                                        <option value="20">20</option>    
-                                        <option value="5000">Show all</option>
-                                    </select>    
-                                </div>
+                                <div class="card-tools">
+                                    <select name="" id="pagination" class="dropdown-item" style="width: 150px; margin-bottom: 6px;color: #fff;background-color: #adb5bd;border-radius: 4px;">
+                                        <option value="{{('employe')}}">show all</option>
+                                        <option value="{{('employe')}}?query={{ request('query') }}&paged=5"@if($paged == 5) selected @endif>5</option>
+                                        <option value="{{('employe')}}?query={{ request('query') }}&paged=10"@if($paged == 10) selected @endif>10</option>
+                                    </select>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-sm-4">
+                            <div class="breadcrumbs-area clearfix">
+                                <li class="nav-item" style="list-style: none">
+                                    <table>
+                                        <td style="padding: 5px;"> {{__("multilang.time")}} : </td>
+                                        <td>
+                                            <select class="custom-select" id="timezone" name="company" onchange="if (this.value) window.location.href=this.value">
+                                                <option value=""> {{ Session::get('timezone') }} </option>
+                                            </select>
+                                        </td>
+                                    </table>
+                                </li>
                             </div>
                         </div>
                     </div>
@@ -102,15 +117,16 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>{{__("first")}}</th>
-                                <th>{{__("last")}}</th>
-                                <th>{{__("company")}}</th>
-                                <th>{{__("email")}}</th>
-                                <th>{{__("phone")}}</th>
-                                <th>created_by_id</th>
-                                <th>updated_by_id</th>
-                                <th>Pass</th>
-                                <th style="text-align: center">{{__("action")}}</th>
+                                <th>{{__("multilang.first")}}</th>
+                                <th>{{__("multilang.last")}}</th>
+                                <th>{{__("multilang.company")}}</th>
+                                <th>{{__("multilang.email")}}</th>
+                                <th>Password</th>
+                                <th>{{__("multilang.phone")}}</th>
+                                <th>{{__("multilang.created")}}</th>
+                                <th>{{__("multilang.created_by_id")}}</th>
+                                <th>{{__("multilang.updated_by_id")}}</th>
+                                <th style="text-align: center">{{__("multilang.action")}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,10 +140,11 @@
                                 <td>{{$item_employe->last_name}}</td>
                                 <td>{{$item_employe->companies['name']}}</td>
                                 <td>{{$item_employe->email}}</td>
-                                <td>{{$item_employe->phone}}</td>
-                                <td>{{$item_employe->created_by_id}}</td>
-                                <td>{{$item_employe->updated_by_id}}</td>
                                 <td>{{$item_employe->password}}</td>
+                                <td>{{$item_employe->phone}}</td>
+                                <td>{{ \Carbon\Carbon::parse($item_employe->created_at)->setTimezone(Session::get('timezone'))->format(' Y-m-d h:i:s') }}</td>
+                                <td style="text-align: center">{{$item_employe->created_by_id}}</td>
+                                <td style="text-align: center">{{$item_employe->updated_by_id}}</td>
                                 <td style="text-align: center">
                                     <a href="/upload/delate_employe/{{$item_employe->id}}" style="color: #495057"><i class="fas fa-trash fa-lg icn-dlt"></i></a>
                                     <a data-toggle="modal" data-target="#editModalEmploye-{{$item_employe->id}}" href="" style="color: #495057"><i class="fas fa-edit fa-lg icn-edt"></i></a>
@@ -136,14 +153,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="pagination-container">
-                        <nav>
-                            <ul class="pagination">
-                                <li class="prev"><a href="#" id="prev">&#139;</a></li>
-                                <li class="next"><a href="#" id="next">&#155;</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    {{ $employe->appends(['paged' => $paged])->links() }} 
+                    
                 </div>
 
                 {{--  add modal  --}}
@@ -243,82 +254,37 @@
                   </div>
                 </div>
             </div>
-            <script>            
-                let tbody=document.querySelector('tbody');
-                let tr=tbody.getElementsByTagName('tr');
-                let select=document.querySelector('select')
-                let ul=document.querySelector('.pagination');
-
-                let arrayTr=[];
-
-                for (let i = 0; i < tr.length; i++) {
-                arrayTr.push(tr[i]);
-                }
-                select.onchange=rowCount;
-                function rowCount(e) {
-                let neil= ul.querySelectorAll('.list');
-                neil.forEach(n=>n.remove());
-                let limit= parseInt(e.target.value);
-                displayPage(limit);
-                }
-                function displayPage(limit) {
-                tbody.innerHTML='';
-                for (let i = 0; i < limit; i++) {
-                    tbody.appendChild(arrayTr[i]);
-                }
-                buttonGenerator(limit);
-                }
-                displayPage(5);
-
-                function buttonGenerator(limit) {
-                    const nofTr=arrayTr.length;
-                    if (nofTr<limit) {
-                      ul.style.display='none';
-                    }else{
-                      ul.style.display='flex';
-                      const nofPage=Math.ceil(nofTr/limit);
-                      for (i = 1; i <= nofPage; i++) {
-                        let li=document.createElement('li');
-                        li.className='list';
-                        let a=document.createElement('a');
-                        a.className='page-link';
-                        a.href='#';
-                        a.setAttribute('data-page',i);
-                        li.appendChild(a);
-                        a.innerText=i;
-                        ul.insertBefore(li,ul.querySelector('.next'));
-                        a.onclick=e=>{
-                          let x = e.target.getAttribute('data-page');
-                          tbody.innerHTML='';
-                          x--;
-                          let start=limit*x;
-                          let end = start+limit;
-                          let page=arrayTr.slice(start,end);
-                          for (let i = 0; i < page.length; i++) {
-                            let item= page[i];
-                            tbody.appendChild(item);
-                          }
+            <script>
+                $(document).ready(function() {
+                    var url_param = {!! json_encode(url()->current()) !!} + '?change_timezone='
+                
+                    $.ajax({
+                        url: 'http://worldtimeapi.org/api/timezone',
+                        dataType: "json",
+                        success: function(data) {
+                            var time_data = jQuery.parseJSON(JSON.stringify(data));
+                            $.each(time_data, function(k, v) {
+                
+                                $('#timezone').append($('<option>', {
+                                    value: url_param + v
+                                }).text(v))
+                            })
                         }
-                        //
-                      }
-                    }
-                    let z=0;
-                    function nextElement() {
-                  
-                      if (this.id=='next') {
-                        z == arrayTr.length - limit ? (z=0) : (z+=limit);
-                      }
-                      if (this.id=='prev') {
-                        z == 0 ? arrayTr.length - limit : (z-=limit);
-                      }
-                      tbody.innerHTML='';
-                      for ( let c = z; c< z+limit; c++) {
-                        tbody.appendChild(arrayTr[c]);
-                      }
-                    }
-                    document.getElementById('prev').onclick=nextElement;
-                    document.getElementById('next').onclick=nextElement;
-                  }
+                    });
+                    $('#date_range').daterangepicker()
+                }); 
+
+                $(function(){
+
+                    $('#pagination').on('change', function () {
+                        var url = $(this).val(); 
+                        if (url) { 
+                            window.location = url; 
+                        }
+                        return false;
+                    });
+                  });
             </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </body>
 @stop

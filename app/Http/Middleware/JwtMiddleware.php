@@ -19,7 +19,7 @@ class JwtMiddleware extends BaseMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {
+    {   
        
         if(! Session::get('jwt_token')){
             return redirect('/login');

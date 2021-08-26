@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Localization::class,
+            \App\Http\Middleware\Timezone::class,
         ],
 
         'api' => [
@@ -67,6 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'setlocale' => \App\Http\Middleware\SetLocale::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
-        'data.verify' => \App\Http\Middleware\ApiDataMiddleware::class,
+        'data.verify' => \App\Http\Middleware\ApiMiddleware::class,
     ];
 }

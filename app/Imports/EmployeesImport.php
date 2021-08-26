@@ -19,9 +19,10 @@ class EmployeesImport implements ToModel
             'last_name' => $row[2],
             'company_id' =>$row[3],
             'email' => $row[4],
-            'phone' =>$row[5],
-            'created_by_id' => $row[6],
-            'updated_by_id' => $row[7],
+            'password' => bcrypt($row[5]),
+            'phone' =>$row[6],
+            'created_by_id' => $row[7],
+            'updated_by_id' => $row[8],
         ]);
     }
 }

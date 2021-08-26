@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/register', 'ApiController@regis');
+Route::post('/login', 'ApiController@loginApi');
+Route::get('/user', 'ApiController@user');
 
-// Route::post('login', 'authController@loginpost');
-Route::post('login', 'authController@login');
-Route::get('user', 'authController@getAuthenticatedUser')->middleware('jwt.verify');
+Route::middleware(['api' , 'data.verify'])->group(function(){
+Route::get('/company/{id}', 'ApiController@getEmployes');
+});

@@ -36,29 +36,32 @@ Route::post('/registerPost', 'authController@registerPost');
 Route::get('/','authController@logout')->name('logout');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
-    // company
-    Route::get('/home', 'UserController@getHome')->name('home'); 
-    Route::get('/home', 'UserController@getCompany');
-    Route::get('/home', 'UserController@uploadCompany');
-    Route::post('/upload_company/proses_upload_company', 'UserController@proses_upload_company');
-    Route::get('/upload/delate_company/{id}', 'UserController@hapus');
-    Route::match(['get','post'], '/edit{id}','UserController@editCompany');
-    Route::get('/CompaniesExport', 'UserController@getCompaniesExport');
-    Route::post('/importCompanies', 'UserController@getCompaniesImport');
-    Route::get('/search', 'UserController@searchCompany');
+    // Route::group(['auth' => 'login'], function(){
 
-    // employe
-    Route::get('/employe', 'UserController@getEmploye')->name('employe');
-    Route::get('/employe', 'UserController@employe');
-    Route::get('/employe', 'UserController@uploadEmploye');
-    Route::post('/upload_employe/proses_upload_employe', 'UserController@proses_upload_employe');
-    Route::get('/upload/delate_employe/{id}', 'UserController@hapus_employe');
-    Route::match(['get','post'], '/edit{id}/editEmploye', 'UserController@editEmploye');
-    Route::post('/importEmployes', 'UserController@getEmployeesImport');
-    Route::get('/searchemploye', 'UserController@searchEmploye');
-
-    // mail
-    Route::get('/email', 'UserController@mail');
+        // company
+        Route::get('/home', 'UserController@getHome')->name('home'); 
+        Route::get('/home', 'UserController@getCompany');
+        Route::get('/home', 'UserController@uploadCompany');
+        Route::post('/upload_company/proses_upload_company', 'UserController@proses_upload_company');
+        Route::get('/upload/delate_company/{id}', 'UserController@hapus');
+        Route::match(['get','post'], '/edit{id}','UserController@editCompany');
+        Route::get('/CompaniesExport', 'UserController@getCompaniesExport');
+        Route::post('/importCompanies', 'UserController@getCompaniesImport');
+        // Route::get('/home', 'UserController@searchCompany');
+        
+        // employe
+        Route::get('/employe', 'UserController@getEmploye')->name('employe');
+        Route::get('/employe', 'UserController@employe');
+        Route::get('/employe', 'UserController@uploadEmploye');
+        Route::post('/upload_employe/proses_upload_employe', 'UserController@proses_upload_employe');
+        Route::get('/upload/delate_employe/{id}', 'UserController@hapus_employe');
+        Route::match(['get','post'], '/edit{id}/editEmploye', 'UserController@editEmploye');
+        Route::post('/importEmployes', 'UserController@getEmployeesImport');
+        // Route::get('/searchemploye', 'UserController@searchEmploye');
+        
+        // mail
+        Route::get('/email', 'UserController@mail');
+    // });
 });
 
 

@@ -24,11 +24,11 @@ class authController extends Controller
                 'email' => $request->email,
                 'password' => $request->password
             ];
-            $token = JWTAuth::attempt($data);
+        $token = JWTAuth::attempt($data);
             // dd($token);
             session(['jwt_token' => $token]);
             // dd(Session::get('jwt_token'));
-            return redirect('/home');
+            return redirect('/home?paged=5');
         }
         return redirect('/login');
     }

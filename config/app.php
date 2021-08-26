@@ -170,6 +170,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        // Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -241,6 +242,11 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
+    ],
+
+    'languages' => [
+        'en' => 'English',
+        'id' => 'Indonesia',
     ],
 
 ];

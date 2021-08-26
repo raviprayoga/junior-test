@@ -4,14 +4,14 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class Model_Companies extends Model
 {
     protected $table     = 'companies';
-    protected $fillable  = ['name','email','logo','created_by_id','updated_by_id','created_at'];
-    
-    // protected $timestamps = false;
-    // protected $dateFormat = 'U';
+    protected $fillable  = ['name','email','logo','website','created_by_id','updated_by_id','created_at'];
+    // protected $dates = ['created_at'];
 
     public function employees()
     {
@@ -26,15 +26,44 @@ class Model_Companies extends Model
         return $this->belongsTo('App\User', 'updated_by_id', 'id');
     }
 
-    // accesor
-    public function getCreatedAtAttribute($value)
+    public function scopeFilter($query)
     {
-        $current = Carbon::parse($value);
-        $trialExpires = $current->format('H:i');
-        if($value === "2021-08-13 09:10:23"){
-            $trialExpires = $current->addHours(7)->format('H:i');
-        }
-        return $trialExpires;
-        // return "{$this->$}";
+        return $query
+        ->where('name', 'LIKE', '%'.request('query').'%')
+        ->orWhere('email', 'LIKE', '%'.request('query').'%')
+        ->orWhere('logo', 'LIKE', '%'.request('query').'%')
+        ->orWhere('created_at', 'LIKE', '%'.request('query').'%')
+        ->orWhere('updated_at', 'LIKE', '%'.request('query').'%');  
+    }
+
+    // accesor
+    // public function getCreatedAtAttribute($value)
+    // {
+    //     $current = Carbon::parse($value);
+    //     $time = $current->addHours(7)->format('Y-m-d H:i');
+        
+    //     return $time;
+    // }
+
+    public function getAsiaAttribute($value)
+    {
+        $time = $this->created_at;
+        $current = Carbon::parse($time);
+        $times = $current->addHours(7)->format('Y-m-d H:i');
+        return $times;
+    }
+    public function getAmerikaAttribute($value)
+    {
+        $time = $this->created_at;
+        $current = Carbon::parse($time);
+        $times = $current->addHours(-4)->format('Y-m-d H:i');
+        return $times;
+    }
+    public function getArabAttribute($value)
+    {
+        $time = $this->created_at;
+        $current = Carbon::parse($time);
+        $times = $current->addHours(3)->format('Y-m-d H:i');
+        return $times;
     }
 }
