@@ -121,7 +121,7 @@
                                 <th>{{__("multilang.last")}}</th>
                                 <th>{{__("multilang.company")}}</th>
                                 <th>{{__("multilang.email")}}</th>
-                                <th>Password</th>
+                                {{--  <th>Password</th>  --}}
                                 <th>{{__("multilang.phone")}}</th>
                                 <th>{{__("multilang.created")}}</th>
                                 <th>{{__("multilang.created_by_id")}}</th>
@@ -140,7 +140,7 @@
                                 <td>{{$item_employe->last_name}}</td>
                                 <td>{{$item_employe->companies['name']}}</td>
                                 <td>{{$item_employe->email}}</td>
-                                <td>{{$item_employe->password}}</td>
+                                {{--  <td>{{$item_employe->password}}</td>  --}}
                                 <td>{{$item_employe->phone}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item_employe->created_at)->setTimezone(Session::get('timezone'))->format(' Y-m-d h:i:s') }}</td>
                                 <td style="text-align: center">{{$item_employe->created_by_id}}</td>

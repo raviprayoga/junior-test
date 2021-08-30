@@ -36,8 +36,6 @@ Route::post('/registerPost', 'authController@registerPost');
 Route::get('/','authController@logout')->name('logout');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
-    // Route::group(['auth' => 'login'], function(){
-
         // company
         Route::get('/home', 'UserController@getHome')->name('home'); 
         Route::get('/home', 'UserController@getCompany');
@@ -61,7 +59,24 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         
         // mail
         Route::get('/email', 'UserController@mail');
-    // });
+
+        // Item
+        Route::get('/item','itemController@getItem')->name('item');
+        Route::post('/upload_items/proses_upload_items', 'itemController@proses_upload_items')->name('addItems');
+        Route::get('/hapusItems/{id}', 'itemController@itemDelete');
+        Route::match(['get','post'], '/editItems{id}/edit', 'itemController@editItems');
+        
+        // Sells
+        Route::get('/sells', 'sellController@getSells')->name('sells');
+        Route::post('/upload_sell/proses_upload_sell', 'sellController@proses_upload_sells')->name('addSells');
+        Route::get('/hapusSells/{id}', 'sellController@sellsDelete');
+        Route::match(['get','post'], '/editSells{id}/edit', 'sellController@editSells');
+
+        // Sell_summary
+        Route::get('/sell_summary', 'sellController@getSellSummarys')->name('summary');
+
+        // Detail_Summary
+        Route::get('/detail/{id}', 'sellController@getDetail');
 });
 
 

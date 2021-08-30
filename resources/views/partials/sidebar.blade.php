@@ -63,6 +63,15 @@
                             <li>
                                 <a href="{{('employe')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>{{__('multilang.employees')}}</span></a>
                             </li>
+                            <li>
+                                <a href="{{route('item')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>{{__('multilang.items')}}</span></a>
+                            </li>
+                            <li>
+                                <a href="{{route('sells')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>{{__('multilang.sells')}}</span></a>
+                            </li>
+                            <li>
+                                <a href="{{route('summary')}}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Sell Summary</span></a>
+                            </li>
                         </ul>
                     </nav>
                 </div>

@@ -119,7 +119,14 @@ class UserController extends Controller
             $file->move($tujuan_upload, $nama_file);
             $user = Auth::user()->id;
 
-            Model_Companies::where(['id'=>$id])->update(['name'=>$company['name'], 'email'=>$company['email'], 'logo'=>$nama_file, 'website'=>$company['website'] ,'updated_by_id'=>$user]);
+            Model_Companies::where(['id'=>$id])
+            ->update([
+                'name'=>$company['name'], 
+                'email'=>$company['email'], 
+                'logo'=>$nama_file, 
+                'website'=>$company['website'],
+                'updated_by_id'=>$user
+            ]);
             return redirect()->back()->with('success', 'Data berhasil diubah!');
         }
     }
@@ -180,7 +187,16 @@ class UserController extends Controller
             $employe = $request->all();
             $user = Auth::user()->id;
             // $pw = bcrypt($request->password);
-            Model_Employees::where(['id'=>$id])->update(['first_name'=>$employe['first_name'], 'last_name'=>$employe['last_name'],'company_id'=>$employe['company'],'email'=>$employe['email'], 'phone'=>$employe['phone'], 'password'=>bcrypt($employe['password']) ,'updated_by_id'=>$user]);
+            Model_Employees::where(['id'=>$id])
+            ->update([
+                'first_name'=>$employe['first_name'], 
+                'last_name'=>$employe['last_name'],
+                'company_id'=>$employe['company'],
+                'email'=>$employe['email'], 
+                'phone'=>$employe['phone'], 
+                'password'=>bcrypt($employe['password']),
+                'updated_by_id'=>$user
+            ]);
             return redirect()->back();
         }
     }
